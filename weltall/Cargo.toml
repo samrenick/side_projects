@@ -1,0 +1,10 @@
+[package]
+name = "weltall"
+version = "0.1.0"
+authors = ["Sam Renick <samcrenick@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+toml = "0.4.2"
+serde = {version = "1.0.99", features= ["derive"] }
+

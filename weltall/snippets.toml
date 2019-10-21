@@ -1,0 +1,7 @@
+[rust]
+"?" = "println!(\"{:?}\",~);"
+"{" = "println!(\"{}\", ~);"
+[php]
+"g" = "gdie(~);"
+[vue]
+"a" = "axios .post(this.getUrl(), JSON.stringify(data), config) .then(response => {~}) .catch(error => { console.log(error); });"
