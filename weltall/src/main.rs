@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 fn run() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
     let snippets_path: &str = &args[1];
-    let search_input: &str = &args[2];
+    let search_input: &str = &args[2].trim();
     let lines = lines_from_file(snippets_path);
     for line in lines {
         if line.contains(search_input) {
