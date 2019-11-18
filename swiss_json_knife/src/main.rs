@@ -18,9 +18,9 @@ fn run() {
                     .max_age(3600),
             )
             .service(
-                web::resource(r"/parse_json/filename/{filename}/columns/{columns}")
+                web::resource(r"/parse_json/filename/{filename}/columns/{columns}/filter/{filter}")
                     .route(web::get().to(swiss_json_knife::index))
-                    .route(web::head().to(|| HttpResponse::MethodNotAllowed())),
+                    .route(web::head().to(HttpResponse::MethodNotAllowed)),
             )
     })
     .bind("192.168.3.69:8088")

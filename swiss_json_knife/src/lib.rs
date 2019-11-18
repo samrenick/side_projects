@@ -4,10 +4,11 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 
-pub fn index(input: web::Path<(String, String)>) -> Result<HttpResponse> {
+pub fn index(input: web::Path<(String, String, String)>) -> Result<HttpResponse> {
     let resolved_filename = get_filename(&input.0);
     let columns = get_columns(&input.1);
     let data = get_string_from_file(resolved_filename);
+    let filter: String = input.2.to_string();
     let json_input: Value = serde_json::from_str({ &data }).expect("unable to parse");
     let json_object = json_input.as_object().unwrap();
     let mut output_container = Vec::new();
@@ -18,12 +19,21 @@ pub fn index(input: web::Path<(String, String)>) -> Result<HttpResponse> {
                 if value.is_object() {
                     let sub_object = value.as_object().unwrap();
                     for (sub_key, sub_val) in sub_object.iter() {
+                        if filter != "-"
+                            && sub_val.is_string()
+                            && !sub_val.to_string().contains(&filter)
+                        {
+                            continue;
+                        }
                         if columns.contains(sub_key) || columns[0] == "-" {
                             output.insert(sub_key.to_string(), sub_val);
                         }
                     }
                 }
-                output_container.push(output.clone());
+                if !output.is_empty() {
+                    output_container.push(output.clone());
+                }
+                output.clear();
             }
         } else if v.is_object() {
             let sub_object = v.as_object().unwrap();
@@ -42,8 +52,8 @@ pub fn get_string_from_file(filename: String) -> String {
     data
 }
 
-pub fn get_columns(input: &String) -> Vec<String> {
-    let split = input.split(",");
+pub fn get_columns(input: &str) -> Vec<String> {
+    let split = input.split(',');
     let mut columns = Vec::new();
     for s in split {
         columns.push(s.to_string());
@@ -51,8 +61,8 @@ pub fn get_columns(input: &String) -> Vec<String> {
     columns
 }
 
-pub fn get_filename(input: &String) -> String {
-    let filename_split = input.split("-");
+pub fn get_filename(input: &str) -> String {
+    let filename_split = input.split('-');
     let mut resolved_filename = String::new();
     for s in filename_split {
         resolved_filename.push_str("/");
