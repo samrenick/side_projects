@@ -10,8 +10,8 @@ fn run() {
         App::new()
             .wrap(
                 Cors::new()
-                    .allowed_origin("http://192.168.3.69")
-                    // .allowed_origin("http://portal.courierexpress.net")
+                    // .allowed_origin("http://192.168.3.69")
+                    .allowed_origin("http://192.168.2.191")
                     .allowed_methods(vec!["GET", "POST"])
                     .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
                     .allowed_header(http::header::CONTENT_TYPE)
@@ -23,8 +23,8 @@ fn run() {
                     .route(web::head().to(HttpResponse::MethodNotAllowed)),
             )
     })
-    .bind("192.168.3.69:8088")
-    // .bind("portal.courierexpress.net:8088")
+    // .bind("192.168.3.69:8088")
+    .bind("192.168.2.191:8088")
     .unwrap()
     .run()
     .unwrap();
