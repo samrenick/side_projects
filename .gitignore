@@ -5,3 +5,4 @@ Cargo.lock
 /swiss_json_knife/target
 /weltall/target
 nohup.out
+/swiss_json_knife_frontend/node_modules
